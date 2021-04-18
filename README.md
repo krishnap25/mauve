@@ -22,7 +22,7 @@ For scripts to reproduce the experiments in the paper, please see
 
 For a direct install, run this command from your terminal:
 ```
-pip install mauve
+pip install mauve-text
 ``` 
 If you wish to edit or contribute to MAUVE, you should install from source
 ```
