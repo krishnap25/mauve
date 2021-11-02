@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+
+<html lang="Python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAUVE: Measuring the Gap Between Neural Text and Human Text &#8212; MAUVE</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="#">
+      
+      
+      <h1 class="site-logo" id="site-title">MAUVE</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/index.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/mauve"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installation">
+   Installation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quick-start">
+   Quick Start
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functionality">
+   Functionality
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#best-practices-for-mauve">
+   Best Practices for MAUVE
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contributing">
+   Contributing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#authors">
+   Authors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cite">
+   Cite
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#acknowledgments">
+   Acknowledgments
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="mauve-measuring-the-gap-between-neural-text-and-human-text">
+<h1>MAUVE: Measuring the Gap Between Neural Text and Human Text<a class="headerlink" href="#mauve-measuring-the-gap-between-neural-text-and-human-text" title="Permalink to this headline">¶</a></h1>
+<p>MAUVE is a library built on PyTorch and HuggingFace Transformers to measure the gap between
+neural text and human text with the eponymous MAUVE measure, introduced in
+<a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">this paper</a>, which is presented as an oral at NeurIPS 2021.</p>
+<p>MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences.</p>
+<a class="reference internal image-reference" href="_images/mauve.png"><img alt="_images/mauve.png" src="_images/mauve.png" style="width: 100%;" /></a>
+<p>The main features are:</p>
+<ul class="simple">
+<li><p>MAUVE with k-means quantization</p></li>
+<li><p>Adaptive selection of k-means hyperparameters</p></li>
+<li><p>Compute MAUVE with text already encoded or use HuggingFace Transformers + PyTorch to compute encodings</p></li>
+<li><p>Implementation of the <cite>Frontier Intergal</cite>, another divergence measure proposed in <a class="reference external" href="https://arxiv.org/pdf/2106.07898.pdf">this paper</a>.</p></li>
+</ul>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#installation"><span class="std std-ref">Installation</span></a></p></li>
+<li><p><a class="reference internal" href="#quick-start"><span class="std std-ref">Quick Start</span></a></p></li>
+<li><p><a class="reference internal" href="#functionality"><span class="std std-ref">Functionality</span></a></p></li>
+<li><p><a class="reference external" href="mauve.html">API Details</a></p></li>
+<li><p><a class="reference internal" href="#best-practices-for-mauve"><span class="std std-ref">Best Practices for MAUVE</span></a></p></li>
+<li><p><a class="reference internal" href="#contributing"><span class="std std-ref">Contributing</span></a></p></li>
+<li><p><a class="reference internal" href="#authors"><span class="std std-ref">Authors</span></a></p></li>
+<li><p><a class="reference internal" href="#cite"><span class="std std-ref">Cite</span></a></p></li>
+<li><p><a class="reference internal" href="#acknowledgments"><span class="std std-ref">Acknowledgments</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Once you have PyTorch &gt;=1.7, you can grab MAUVE from pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install mauve-text
+</pre></div>
+</div>
+<p>Alternatively, if you would like to edit the package, run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:krishnap25/mauve.git
+$ <span class="nb">cd</span> mauve
+$ pip install -e .
+</pre></div>
+</div>
+<p>The installation command above installs the main requirements, which are <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, <code class="docutils literal notranslate"><span class="pre">faiss</span></code> and <code class="docutils literal notranslate"><span class="pre">tqdm</span></code>.
+In addition, if you wish to use featurization within MAUVE, you need to manually install:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">torch&gt;=1.1.0</span></code>: See <a class="reference external" href="https://pytorch.org/get-started/locally/">Instructions</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transformers&gt;=3.2.0</span></code>: Simply run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">transformers</span></code> after PyTorch has been installed (<a class="reference external" href="https://huggingface.co/transformers/installation.html">Detailed Instructions here</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
+<p>Let p_text and q_text each be a list of strings, where each string is a complete generation (including context). For best practice, MAUVE needs at least a few thousand generations each for p_text and q_text (the paper uses 5000 each). For our demo, we use 100 generations each for fast running time.</p>
+<p>To demonstrate the functionalities of this package on some real data, this repository provides some functionalities to download and use sample data in the <code class="docutils literal notranslate"><span class="pre">./examples</span></code> folder of the MAUVE github repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone git@github.com:krishnap25/mauve.git
+$ <span class="nb">cd</span> mauve
+$ python examples/download_gpt2_dataset.py
+</pre></div>
+</div>
+<p>The data is downloaded into the <code class="docutils literal notranslate"><span class="pre">./data</span></code> folder. We can load the data (100 samples out of the available 5000) in Python as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">examples</span> <span class="kn">import</span> <span class="n">load_gpt2_dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p_text</span> <span class="o">=</span> <span class="n">load_gpt2_dataset</span><span class="p">(</span><span class="s1">&#39;data/amazon.valid.jsonl&#39;</span><span class="p">,</span> <span class="n">num_examples</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># human</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q_text</span> <span class="o">=</span> <span class="n">load_gpt2_dataset</span><span class="p">(</span><span class="s1">&#39;data/amazon-xl-1542M.valid.jsonl&#39;</span><span class="p">,</span> <span class="n">num_examples</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># machine</span>
+</pre></div>
+</div>
+<p>We can now compute MAUVE as follows (note that this requires installation of PyTorch and HuggingFace Transformers, see the section on <a class="reference internal" href="#installation"><span class="std std-ref">Installation</span></a>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mauve</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># call mauve.compute_mauve using raw text on GPU 0; each generation is truncated to 256 tokens</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">mauve</span><span class="o">.</span><span class="n">compute_mauve</span><span class="p">(</span><span class="n">p_text</span><span class="o">=</span><span class="n">p_text</span><span class="p">,</span> <span class="n">q_text</span><span class="o">=</span><span class="n">q_text</span><span class="p">,</span> <span class="n">device_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_text_length</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">mauve</span><span class="p">)</span> <span class="c1"># prints 0.9917</span>
+</pre></div>
+</div>
+<p>This first downloads GPT-2 large tokenizer and pre-trained model (if you do not have them downloaded already). Even if you have the model offline, it takes it up to 30 seconds to load the model the first time. out now contains the fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">out.mauve</span></code>: MAUVE score, a number between 0 and 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.frontier_integral</span></code>: a scalar divergence measure between P and Q, proposed in <a class="reference external" href="https://arxiv.org/pdf/2106.07898.pdf">this paper</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.divergence_curve</span></code>: a <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of shape (m, 2); plot it with matplotlib to view the divergence curve</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.p_hist</span></code>: a discrete distribution, which is a quantized version of the text distribution p_text</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.q_hist</span></code>: same as above, but with q_text</p></li>
+</ul>
+</div>
+<div class="section" id="functionality">
+<h2>Functionality<a class="headerlink" href="#functionality" title="Permalink to this headline">¶</a></h2>
+<p>We now describe other ways of using MAUVE.</p>
+<p>For each text (in both p_text and q_text), MAUVE internally uses the terimal hidden state from GPT-2 large as a feature representation. This feature encoding process can be rather slow (~10 mins for 5000 generations at a max length of 1024 on a GPU; but the implementation can be made more efficient, see <a class="reference internal" href="#contributing"><span class="std std-ref">Contributing</span></a>). Alternatively, this package allows you to use cached hidden states directly (this does not require PyTorch and HuggingFace Transformers to be installed):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># call mauve.compute_mauve using features obtained directly</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># p_feats and q_feats are `np.ndarray`s of shape (n, dim)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># we use a synthetic example here</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p_feats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>  <span class="c1"># feature dimension = 1024</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q_feats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">mauve</span><span class="o">.</span><span class="n">compute_mauve</span><span class="p">(</span><span class="n">p_features</span><span class="o">=</span><span class="n">p_feats</span><span class="p">,</span> <span class="n">q_features</span><span class="o">=</span><span class="n">q_feats</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also compute MAUVE using the tokenized (BPE) representation using the GPT-2 vocabulary (e.g., obtained from using an explicit call to transformers.GPT2Tokenizer).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># call mauve.compute_mauve using tokens on GPU 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># p_toks, q_toks are each a list of LongTensors of shape [1, length]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># we use synthetic examples here</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p_toks</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">50257</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q_toks</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">50257</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">mauve</span><span class="o">.</span><span class="n">compute_mauve</span><span class="p">(</span><span class="n">p_tokens</span><span class="o">=</span><span class="n">p_toks</span><span class="p">,</span> <span class="n">q_tokens</span><span class="o">=</span><span class="n">q_toks</span><span class="p">,</span> <span class="n">device_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_text_length</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To view the progress messages, pass in the argument verbose=True to mauve.compute_mauve. You can also use different forms as inputs for p and q, e.g., p via p_text and q via q_features.</p>
+<p>Please see the <a class="reference external" href="mauve.html">detailed API here</a>.</p>
+</div>
+<div class="section" id="best-practices-for-mauve">
+<h2>Best Practices for MAUVE<a class="headerlink" href="#best-practices-for-mauve" title="Permalink to this headline">¶</a></h2>
+<p>MAUVE is quite different from most metrics in common use, so here are a few guidelines on proper usage of MAUVE:</p>
+<p><strong>Use for relative comparisons rather than absolute evaluation</strong>:</p>
+<ul class="simple">
+<li><p>We find that MAUVE is best suited for relative comparisons while the absolute MAUVE score is less meaningful.</p></li>
+<li><p>For instance, if we wish to find which of model1 and model2 are better at generating the human distribution, we can compare MAUVE(text_model1, text_human) and MAUVE(text_model2, text_human).</p></li>
+<li><p>The absolute number MAUVE(text_model1, text_human) can vary based on the hyperparameters selected, but the relative trends remain the same.</p></li>
+<li><p>One must ensure that the hyperparameters are exactly the same for the MAUVE scores under comparison.</p></li>
+<li><p>Some hyperparameters are described below.</p></li>
+</ul>
+<p><strong>Number of generations</strong>: MAUVE computes the similarity between two distributions. Therefore, each distribution must contain at least a few thousand samples (we use 5000 each). MAUVE with a smaller number of samples is biased towards optimism (that is, MAUVE typically goes down as the number of samples increase) and exhibits a larger standard deviation between runs.</p>
+<p><strong>Number of clusters (discretization/quantization size)</strong>: We take <code class="docutils literal notranslate"><span class="pre">num_buckets</span></code> to be 0.1 * the number of samples.
+The performance of MAUVE is quite robust to this, provided the number of generations is not too small.
+See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">the paper</a> for details.</p>
+<p><strong>MAUVE is too large or too small</strong>:</p>
+<ul class="simple">
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">mauve_scaling_parameter</span></code> controls the absolute value of the MAUVE score, without changing the relative ordering between various methods. The main purpose of this parameter is to help with interpretability.</p></li>
+<li><p>If you find that all your methods get a very high MAUVE score (e.g., 0.995, 0.994), try increasing the value of <code class="docutils literal notranslate"><span class="pre">mauve_scaling_factor</span></code>. (note: this also increases the per-run standard deviation of MAUVE).</p></li>
+<li><p>If you find that all your methods get a very low MAUVE score (e.g. &lt; 0.4), then try decreasing the value of <code class="docutils literal notranslate"><span class="pre">mauve_scaling_factor</span></code>.</p></li>
+</ul>
+<p><strong>MAUVE takes too long to run</strong>:</p>
+<ul class="simple">
+<li><p>In our experiments (5000-10000 samples and <code class="docutils literal notranslate"><span class="pre">num_buckets</span></code> around 500-1000), MAUVE runs in a few minutes, provided the feature encoding has been performed in advance.</p></li>
+<li><p>You can also try reducing the number of clusters using the argument <code class="docutils literal notranslate"><span class="pre">num_buckets</span></code>. The clustering algorithm's run time scales as the square of the number of clusters. Once the number of clusters exceeds 500, the clustering really starts to slow down. In this case, it could be helpful to set the number of clusters to 500 by overriding the default (which is <code class="docutils literal notranslate"><span class="pre">num_data_points</span> <span class="pre">/</span> <span class="pre">10</span></code>, so use this when the number of samples for each of p and q is over 5000).</p></li>
+<li><p>In this case, try reducing the clustering hyperparameters: set <code class="docutils literal notranslate"><span class="pre">kmeans_num_redo</span></code> to 1, and if this does not help, <code class="docutils literal notranslate"><span class="pre">kmeans_max_iter</span></code> to 100. This enables the clustering to run faster at the cost of returning a worse clustering.</p></li>
+</ul>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>If you find any bugs, please raise an issue on GitHub. If you would like to contribute, please submit a pull request. We encourage and highly value community contributions.</p>
+<p>Some features which would be good to have are:</p>
+<ul class="simple">
+<li><p>batched implementation feature encoding (current implementation sequentially featurizes generations); this requires appropriate padding/masking</p></li>
+<li><p>feature encoding in HuggingFace Transformers with a TensorFlow backend.</p></li>
+</ul>
+</div>
+<div class="section" id="authors">
+<h2>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h2>
+<p>This package is written and maintained by <a class="reference external" href="krishnap25.github.io">Krishna Pillutla</a>.</p>
+</div>
+<div class="section" id="cite">
+<h2>Cite<a class="headerlink" href="#cite" title="Permalink to this headline">¶</a></h2>
+<p>If you find this package useful, or you use it in your research, please cite:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">pillutla</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">mauve</span><span class="p">:</span><span class="n">neurips2021</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">MAUVE</span><span class="p">:</span> <span class="n">Measuring</span> <span class="n">the</span> <span class="n">Gap</span> <span class="n">Between</span> <span class="n">Neural</span> <span class="n">Text</span> <span class="ow">and</span> <span class="n">Human</span> <span class="n">Text</span> <span class="n">using</span> <span class="n">Divergence</span> <span class="n">Frontiers</span><span class="p">},</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span> <span class="n">Swayamdipta</span><span class="p">,</span> <span class="n">Swabha</span> <span class="ow">and</span> <span class="n">Zellers</span><span class="p">,</span> <span class="n">Rowan</span> <span class="ow">and</span> <span class="n">Thickstun</span><span class="p">,</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
+  <span class="n">booktitle</span> <span class="o">=</span> <span class="p">{</span><span class="n">NeurIPS</span><span class="p">},</span>
+  <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span><span class="mi">2021</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nd">@inproceedings</span><span class="p">{</span><span class="n">liu</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">divergence</span><span class="p">:</span><span class="n">neurips2021</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="p">{{</span><span class="n">Divergence</span> <span class="n">Frontiers</span> <span class="k">for</span> <span class="n">Generative</span> <span class="n">Models</span><span class="p">:</span> <span class="n">Sample</span> <span class="n">Complexity</span><span class="p">,</span> <span class="n">Quantization</span> <span class="n">Effects</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Frontier</span> <span class="n">Integrals</span><span class="p">}},</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Liu</span><span class="p">,</span> <span class="n">Lang</span> <span class="ow">and</span> <span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span>  <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Oh</span><span class="p">,</span> <span class="n">Sewoong</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
+  <span class="n">booktitle</span> <span class="o">=</span> <span class="p">{</span><span class="n">NeurIPS</span><span class="p">},</span>
+  <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span><span class="mi">2021</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this headline">¶</a></h2>
+<p>This work was supported by NSF DMS-2134012, NSF CCF-2019844, NSF DMS-2023166, the DARPA MCS program through NIWC Pacific (N66001-19-2-4031), the CIFAR &quot;Learning in Machines &amp; Brains&quot; program, a Qualcomm Innovation Fellowship, and faculty research awards.</p>
+</div>
+</div>
+
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Krishna Pillutla<br/>
+        
+            &copy; Copyright 2021, Authors.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
