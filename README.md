@@ -1,13 +1,11 @@
 # MAUVE
 
-This package provides an implementation of MAUVE, an evaluation metric for open-ended text generation.
-It was introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf).
+MAUVE is a library built on PyTorch and HuggingFace Transformers to measure the gap between neural text and human text 
+with the eponymous MAUVE measure, 
+introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf) (NeurIPS 2021 Oral).
 
-MAUVE directly  compares  the distribution of machine-generated text to 
-that of human language as the area under the divergence curve for the two distributions. 
-MAUVE summarizes the  trade-off  between two types of errors: 
-those arising from parts of the human distribution that the model distribution 
-approximates  well, and those it does not. 
+MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences.
+
 
 **Features**:
 - MAUVE with quantization using *k*-means. 
@@ -36,7 +34,7 @@ Some functionality requires more packages. Please see the requirements below.
 The installation command above installs the main requirements, which are:
 - `numpy>=1.18.1`
 - `scikit-learn>=0.22.1`
-- `faiss-gpu>=1.7.0`
+- `faiss-cpu>=1.7.0`
 - `tqdm>=4.40.0`
 
 In addition, if you wish to use featurization within MAUVE, you need to manually install:
@@ -86,7 +84,8 @@ print(out.mauve) # prints 0.9917
 This first downloads GPT-2 large tokenizer and pre-trained model (if you do not have them downloaded already). 
 Even if you have the model offline, it takes it up to 30 seconds to load the model the first time. 
 `out` now contains the fields:
-- `out.mauve`: MAUVE score, a number between 0 and 1
+- `out.mauve`: MAUVE score, a number between 0 and 1. Larger values indicate that P and Q are closer.
+- `out.frontier_integral`: Frontier Integral, a number between 0 and 1. Smaller values indicate that P and Q are closer.
 - `out.divergence_curve`: a `numpy.ndarray` of shape (m, 2); plot it with matplotlib to view the divergence curve
 - `out.p_hist`: a discrete distribution, which is a quantized version of the text distribution `p_text`
 - `out.q_hist`: same as above, but with `q_text`  
@@ -211,17 +210,25 @@ MAUVE is quite different from most metrics in common use, so here are a few guid
 ## Citation
 If you find this package useful, or you use it in your research, please cite:
 ```
-@article{pillutla-etal:mauve:preprint2021,
-title = {{MAUVE: Human-Machine Divergence Curves for Evaluating Open-Ended Text Generation}},
-author = {Krishna Pillutla and Swabha Swayamdipta and Rowan Zellers and John Thickstun and Yejin Choi and Zaid Harchaoui}
-journal={arXiv preprint},
-year = {2021},
+@inproceedings{pillutla-etal:mauve:neurips2021,
+  title={MAUVE: Measuring the Gap Between Neural Text and Human Text using Divergence Frontiers},
+  author={Pillutla, Krishna and Swayamdipta, Swabha and Zellers, Rowan and Thickstun, John and Welleck, Sean and Choi, Yejin and Harchaoui, Zaid},
+  booktitle = {NeurIPS},
+  year      = {2021}
+}
+
+```
+The Frontier Integral was introduced in this paper:
+```
+@inproceedings{liu-etal:divergence:neurips2021,
+  title={{Divergence Frontiers for Generative Models: Sample Complexity, Quantization Effects, and Frontier Integrals}},
+  author={Liu, Lang and Pillutla, Krishna and  Welleck, Sean and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
+  booktitle = {NeurIPS},
+  year      = {2021}
 }
 ```
     
 ## Acknowledgements
-This work was supported by NSF CCF-2019844,the DARPA MCS program through NIWC Pacific(N66001-19-2-4031),
-the CIFAR program "Learning in Machines and Brains", 
-a Qualcomm Innovation Fellowship, and faculty research awards. 
+This work was supported by NSF DMS-2134012, NSF CCF-2019844, NSF DMS-2023166, the DARPA MCS program through NIWC Pacific (N66001-19-2-4031), the CIFAR "Learning in Machines & Brains" program, a Qualcomm Innovation Fellowship, and faculty research awards.
 
 

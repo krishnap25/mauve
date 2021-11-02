@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="mauve",
-    version="0.1.0",
+    version="0.2.0",
     author="Krishna Pillutla",
     author_email="pillutla@cs.washington.edu",
     description="Implementation of the MAUVE to evaluate text generation",
@@ -26,7 +26,7 @@ setuptools.setup(
     install_requires=[
         'numpy>=1.18.1',
         'scikit-learn>=0.22.1',
-        'faiss-gpu>=1.7.0',
+        'faiss-cpu>=1.7.0',
         'tqdm>=4.40.0',
         'requests']
 )

@@ -1,6 +1,7 @@
 # Author: Krishna Pillutla
 # License: GPLv3
 
+import math
 import numpy as np
 import time
 from types import SimpleNamespace
@@ -39,36 +40,42 @@ def compute_mauve(
         divergence_curve_discretization_size=25, mauve_scaling_factor=5,
         verbose=False, seed=25
 ):
-    """
-    Compute Mauve between two text generations P and Q.
 
-    P is either specified as "p_features", "p_tokens", or "p_text". Same with Q.
-    :param p_features: numpy.ndarray of shape (n, d), where n is the number of generations
-    :param q_features: numpy.ndarray of shape (n, d), where n is the number of generations
-    :param p_tokens: list of length n, each entry is torch.LongTensor of shape (1, length)
-    :param q_tokens: list of length n, each entry is torch.LongTensor of shape (1, length)
-    :param p_text: list of length n, each entry is a string
-    :param q_text: list of length n, each entry is a string
-    :param num_buckets: the size of the histogram to quantize P and Q. Options: 'auto' (default) or an integer
-    :param pca_max_data: the number data points to use for PCA. If `-1`, use all the data. Default -1
-    :param kmeans_explained_var: amount of variance of the data to keep in dimensionality reduction by PCA. Default 0.9
-    :param kmeans_num_redo: number of times to redo k-means clustering (the best objective is kept). Default 5
-    :param kmeans_max_iter: maximum number of k-means iterations. Default 500
-    :param featurize_model_name: name of the model from which features are obtained. Default 'gpt2-large'
-    :param device_id: Device for featurization. Supply gpu_id (e.g. 0 or 3) to use GPU or -1 to use CPU
-    :param max_text_length: maximum number of tokens to consider. Default 1024
-    :param divergence_curve_discretization_size: Number of points to consider on the divergence curve. Default 25
-    :param mauve_scaling_factor: "c" from the paper. Default 5.
-    :param verbose: If True, print running time updates
-    :param seed: random seed to initialize k-means cluster assignments.
+    """
+    Compute the MAUVE score between two text generations P and Q.
+
+    P is either specified as ``p_features``, ``p_tokens``, or ``p_text``. Same with Q.
+
+    :param ``p_features``: ``numpy.ndarray`` of shape (n, d), where n is the number of generations.
+    :param ``q_features``: ``numpy.ndarray`` of shape (n, d), where n is the number of generations.
+    :param ``p_tokens``: list of length n, each entry is torch.LongTensor of shape (1, length).
+    :param ``q_tokens``: list of length n, each entry is torch.LongTensor of shape (1, length).
+    :param ``p_text``: list of length n, each entry is a string.
+    :param ``q_text``: list of length n, each entry is a string.
+    :param ``num_buckets``: the size of the histogram to quantize P and Q. Options: ``'auto'`` (default, which is n/10) or an integer.
+    :param ``pca_max_data``: the number data points to use for PCA. If `-1`, use all the data. Default -1.
+    :param ``kmeans_explained_var``: amount of variance of the data to keep in dimensionality reduction by PCA. Default 0.9.
+    :param ``kmeans_num_redo``: number of times to redo k-means clustering (the best objective is kept). Default 5. 
+        Try reducing this to 1 in order to reduce running time.
+    :param ``kmeans_max_iter``: maximum number of k-means iterations. Default 500.
+        Try reducing this to 100 in order to reduce running time.
+    :param ``featurize_model_name``: name of the model from which features are obtained. Default 'gpt2-large'.
+        We support all models which can be loaded from ``transformers.AutoModel.from_pretrained(featurize_model_name)``.
+    :param ``device_id``: Device for featurization. Supply gpu_id (e.g. 0 or 3) to use GPU or -1 to use CPU.
+    :param ``max_text_length``: maximum number of tokens to consider. Default 1024.
+    :param ``divergence_curve_discretization_size``: Number of points to consider on the divergence curve. Default 25.
+        Larger values do not offer much of a difference. 
+    :param ``mauve_scaling_factor``: The constant``c`` from the paper. Default 5.
+        See `Best Practices <index.html#best-practices-for-mauve>`_ for details.
+    :param ``verbose``: If True, print running time updates.
+    :param ``seed``: random seed to initialize k-means cluster assignments.
 
     :return: an object with fields p_hist, q_hist, divergence_curve and mauve.
 
-    Here,
-        - p_hist is the obtained histogram for P. Same for q_hist.
-        - divergence_curve contains the points in the divergence curve.
-            It is of shape (m, 2), where m is `divergence_curve_discretization_size`
-        - mauve is a number containing the area under the divergence curve.
+    * ``out.mauve`` is a number between 0 and 1, the MAUVE score. Higher values means P is closer to Q.
+    * ``out.frontier_integral``, a number between 0 and 1. Lower values mean that P is closer to Q. 
+    * ``out.p_hist`` is the obtained histogram for P. Same for ``out.q_hist``.
+    * ``out.divergence_curve`` contains the points in the divergence curve. It is of shape (m, 2), where m is ``divergence_curve_discretization_size``
 
     """
 
@@ -105,8 +112,7 @@ def compute_mauve(
         print('total discretization time:', round(t2-t1, 2), 'seconds')
 
     # Divergence curve and mauve
-    angles = np.linspace(1e-6, np.pi/2 - 1e-6, divergence_curve_discretization_size)
-    mixture_weights = np.cos(angles)  # on an angular grid
+    mixture_weights = np.linspace(1e-6, 1-1e-6, divergence_curve_discretization_size)
     divergence_curve = get_divergence_curve_for_multinomials(p, q, mixture_weights, mauve_scaling_factor)
     x, y = divergence_curve.T
     idxs1 = np.argsort(x)
@@ -115,8 +121,12 @@ def compute_mauve(
         compute_area_under_curve(x[idxs1], y[idxs1]) +
         compute_area_under_curve(y[idxs2], x[idxs2])
     )
+    fi_score = get_fronter_integral(p, q)
     to_return = SimpleNamespace(
-        p_hist=p, q_hist=q, divergence_curve=divergence_curve, mauve=mauve_score
+        p_hist=p, q_hist=q, divergence_curve=divergence_curve, 
+        mauve=mauve_score,
+        frontier_integral=fi_score,
+        num_buckets=num_buckets,
     )
     return to_return
 
@@ -232,3 +242,19 @@ def get_divergence_curve_for_multinomials(p, q, mixture_weights, scaling_factor)
         divergence_curve.append([kl_multinomial(q, r), kl_multinomial(p, r)])
     divergence_curve.append([np.inf, 0]) # other extreme point
     return np.exp(-scaling_factor * np.asarray(divergence_curve))
+
+def get_fronter_integral(p, q, scaling_factor=2):
+    total = 0.0
+    for p1, q1 in zip(p, q):
+        if p1 == 0 and q1 == 0:
+            pass
+        elif p1 == 0:
+            total += q1 / 4
+        elif q1 == 0:
+            total += p1 / 4
+        elif abs(p1 - q1 > 1e-8):
+            t1 = p1 + q1
+            t2 = p1 * q1 * (math.log(p1) - math.log(q1)) / (p1 - q1)
+            total += 0.25 * t1 - 0.5 * t2
+        # else: contribution is 0 
+    return total * scaling_factor
