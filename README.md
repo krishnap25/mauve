@@ -158,7 +158,8 @@ Note: `p` and `q` can be of different lengths, but it is
 recommended that they are the same length.
 
 ## Contact
-The best way to contact the authors in case of any questions or clarifications is by raising an issue on GitHub.
+The best way to contact the authors in case of any questions or clarifications (about the package or the paper) is by raising an issue on GitHub.
+We are not able to respond to queries over email. 
 
 ## Contributing
 If you find any bugs, please raise an issue on GitHub. 
