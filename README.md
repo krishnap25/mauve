@@ -4,7 +4,9 @@ MAUVE is a library built on PyTorch and HuggingFace Transformers to measure the 
 with the eponymous MAUVE measure, 
 introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf) (NeurIPS 2021 Oral).
 
-MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences.
+MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences. 
+
+[Documentation Link](krishnap25.github.io/mauve/)
 
 
 **Features**:
