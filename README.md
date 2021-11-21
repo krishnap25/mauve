@@ -155,6 +155,8 @@ You can also use different forms as inputs for `p` and `q`, e.g.,
 Note: `p` and `q` can be of different lengths, but it is
 recommended that they are the same length.
 
+## Contact
+The best way to contact the authors in case of any questions or clarifications is by raising an issue on GitHub.
 
 ## Contributing
 If you find any bugs, please raise an issue on GitHub. 
@@ -218,7 +220,7 @@ If you find this package useful, or you use it in your research, please cite:
 }
 
 ```
-The Frontier Integral was introduced in this paper:
+Further, the Frontier Integral was introduced in this paper:
 ```
 @inproceedings{liu-etal:divergence:neurips2021,
   title={{Divergence Frontiers for Generative Models: Sample Complexity, Quantization Effects, and Frontier Integrals}},
