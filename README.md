@@ -153,6 +153,7 @@ You can also use different forms as inputs for `p` and `q`, e.g.,
 - `mauve_scaling_factor`: "c" from the paper. Default 5.
 - `verbose`: If True (default), print running time updates
 - `seed`: random seed to initialize *k*-means cluster assignments.
+- `batch_size`: Batch size for feature extraction.
 
 Note: `p` and `q` can be of different lengths, but it is
 recommended that they are the same length.
@@ -167,8 +168,6 @@ If you would like to contribute, please submit a pull request.
 We encourage and highly value community contributions.
 
 Some features which would be good to have are:
-- batched implementation featurization (current implementation sequentially featurizes generations); 
-    this requires appropriate padding/masking
 - featurization in HuggingFace Transformers with a  TensorFlow backend.
     
 ## Best Practices for MAUVE

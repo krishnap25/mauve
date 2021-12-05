@@ -38,7 +38,7 @@ def compute_mauve(
         kmeans_num_redo=5, kmeans_max_iter=500,
         featurize_model_name='gpt2-large', device_id=-1, max_text_length=1024,
         divergence_curve_discretization_size=25, mauve_scaling_factor=5,
-        verbose=False, seed=25
+        verbose=False, seed=25, batch_size=1, use_float64=False,
 ):
 
     """
@@ -69,6 +69,7 @@ def compute_mauve(
         See `Best Practices <index.html#best-practices-for-mauve>`_ for details.
     :param ``verbose``: If True, print running time updates.
     :param ``seed``: random seed to initialize k-means cluster assignments.
+    :param ``batch_size``: Batch size for feature extraction
 
     :return: an object with fields p_hist, q_hist, divergence_curve and mauve.
 
@@ -85,11 +86,11 @@ def compute_mauve(
         raise ValueError('Supply at least one of q_features, q_tokens, q_text')
     p_features = get_features_from_input(
         p_features, p_tokens, p_text, featurize_model_name, max_text_length,
-        device_id, name="p", verbose=verbose
+        device_id, name="p", verbose=verbose, batch_size=batch_size, use_float64=use_float64,
     )
     q_features = get_features_from_input(
         q_features, q_tokens, q_text, featurize_model_name, max_text_length,
-        device_id, name="q", verbose=verbose
+        device_id, name="q", verbose=verbose, batch_size=batch_size, use_float64=use_float64,
     )
     if num_buckets == 'auto':
         # heuristic: use num_clusters = num_generations / 10
@@ -131,8 +132,8 @@ def compute_mauve(
     return to_return
 
 def get_features_from_input(features, tokenized_texts, texts,
-                            featurize_model_name, max_len, device_id, name,
-                            verbose=False):
+                            featurize_model_name, max_len, device_id, name, batch_size,
+                            verbose=False, use_float64=False):
     global MODEL, TOKENIZER, MODEL_NAME
     if features is None:
         # Featurizing is necessary. Make sure the required packages are available
@@ -169,8 +170,10 @@ def get_features_from_input(features, tokenized_texts, texts,
             MODEL_NAME = featurize_model_name
         else:
             MODEL = MODEL.to(get_device_from_arg(device_id))
+        if use_float64:
+            MODEL = MODEL.double()
         if verbose: print('Featurizing tokens')
-        features = featurize_tokens_from_model(MODEL, tokenized_texts, name).detach().cpu().numpy()
+        features = featurize_tokens_from_model(MODEL, tokenized_texts, batch_size, name).detach().cpu().numpy()
     else:
         features = np.asarray(features)
     return features
