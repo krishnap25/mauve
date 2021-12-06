@@ -252,7 +252,7 @@ def get_fronter_integral(p, q, scaling_factor=2):
             total += q1 / 4
         elif q1 == 0:
             total += p1 / 4
-        elif abs(p1 - q1 > 1e-8):
+        elif abs(p1 - q1) > 1e-8:
             t1 = p1 + q1
             t2 = p1 * q1 * (math.log(p1) - math.log(q1)) / (p1 - q1)
             total += 0.25 * t1 - 0.5 * t2
