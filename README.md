@@ -6,7 +6,9 @@ introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf) (NeurIPS 2021 O
 
 MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences. 
 
-[Documentation Link](krishnap25.github.io/mauve/)
+### [Documentation Link](krishnap25.github.io/mauve/)
+
+### _New: MAUVE is available via [HuggingFace Datasets](https://huggingface.co/docs/datasets/how_to_metrics.html)!_
 
 
 **Features**:
