@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="mauve",
-    version="0.2.0",
+    name="mauve-text",
+    version="0.3.0",
     author="Krishna Pillutla",
     author_email="pillutla@cs.washington.edu",
     description="Implementation of the MAUVE to evaluate text generation",
@@ -17,7 +17,7 @@ setuptools.setup(
     },
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: GPLv3 License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
     package_dir={"": "src"},
