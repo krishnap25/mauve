@@ -69,7 +69,10 @@ def compute_mauve(
         See `Best Practices <index.html#best-practices-for-mauve>`_ for details.
     :param ``verbose``: If True, print running time updates.
     :param ``seed``: random seed to initialize k-means cluster assignments.
-    :param ``batch_size``: Batch size for feature extraction
+    :param ``batch_size``: Batch size for feature extraction.
+        A larger batch size speeds up computation.
+        You might have to experiment to find the largest batch size that fits in your GPU memory.
+        See `here <https://github.com/krishnap25/mauve/issues/8#issuecomment-1082075240>`_ for details.
 
     :return: an object with fields p_hist, q_hist, divergence_curve and mauve.
 

@@ -18,7 +18,6 @@ The main features are:
 * Adaptive selection of k-means hyperparameters 
 * Compute MAUVE with text already encoded or use HuggingFace Transformers + PyTorch to compute encodings
 * Implementation of the `Frontier Intergal`, another divergence measure proposed in `this paper <https://arxiv.org/pdf/2106.07898.pdf>`_.
-  
 
 
 Table of Contents
@@ -158,8 +157,9 @@ See `the paper <https://arxiv.org/pdf/2102.01454.pdf>`_ for details.
 
 **MAUVE takes too long to run**:
 
-* In our experiments (5000-10000 samples and ``num_buckets`` around 500-1000), MAUVE runs in a few minutes, provided the feature encoding has been performed in advance. 
-* You can also try reducing the number of clusters using the argument ``num_buckets``. The clustering algorithm's run time scales as the square of the number of clusters. Once the number of clusters exceeds 500, the clustering really starts to slow down. In this case, it could be helpful to set the number of clusters to 500 by overriding the default (which is ``num_data_points / 10``, so use this when the number of samples for each of p and q is over 5000).
+* In our experiments (5000-10000 samples and ``num_buckets`` around 500-1000), MAUVE runs in a few minutes, provided the feature encoding has been performed in advance.
+* The feature encoding is the slowest part. Use a batch size as large as allowed for your GPU memory. For instance, with GPT-2 large as a featurizing model, a batch size of 8 works on a GPU with 12GB memory, resulting in a near 8x speedup. 
+* To reduce the post-featurization runtime, you can also try reducing the number of clusters using the argument ``num_buckets``. The clustering algorithm's run time scales as the square of the number of clusters. Once the number of clusters exceeds 500, the clustering really starts to slow down. In this case, it could be helpful to set the number of clusters to 500 by overriding the default (which is ``num_data_points / 10``, so use this when the number of samples for each of p and q is over 5000).
 * In this case, try reducing the clustering hyperparameters: set ``kmeans_num_redo`` to 1, and if this does not help, ``kmeans_max_iter`` to 100. This enables the clustering to run faster at the cost of returning a worse clustering.
 
 Contributing
@@ -169,7 +169,6 @@ If you find any bugs, please raise an issue on GitHub. If you would like to cont
 
 Some features which would be good to have are:
 
-* batched implementation feature encoding (current implementation sequentially featurizes generations); this requires appropriate padding/masking
 * feature encoding in HuggingFace Transformers with a TensorFlow backend.
 
 
