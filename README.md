@@ -160,6 +160,32 @@ You can also use different forms as inputs for `p` and `q`, e.g.,
 Note: `p` and `q` can be of different lengths, but it is
 recommended that they are the same length.
 
+## S-MAUVE
+S-MAUVE is an extension to MAUVE that evaluates the quality of text at the token level, rather
+than sequence level. The result is a sequence of MAUVE scores, that can be used to produce a plot.
+The plot shows the quality of generated text at each index. Here, for example, S-MAUVE
+is used to compare different decoding methods.
+![s_mauve](s_mauve.png)
+Example usage
+
+``` python
+    p_text = load_gpt2_dataset(p, 100)
+    q_text = load_gpt2_dataset(q, 100)
+    model_name = "gpt2"
+    scores = compute_s_mauve(p_text, q_text, model_name, 5)
+
+    def moving_average(a, n=3):
+        ret = np.cumsum(a, dtype=float)
+        ret[n:] = ret[n:] - ret[:-n]
+        return ret[n - 1:] / n
+
+    plt.ylabel("S-MAUVE")
+    plt.xlabel("Token")
+    plt.plot(moving_average(scores, n = 4), label="Normal text")
+    plt.legend()
+    plt.show()
+```
+
 ## Contact
 The best way to contact the authors in case of any questions or clarifications (about the package or the paper) is by raising an issue on GitHub.
 We are not able to respond to queries over email. 
