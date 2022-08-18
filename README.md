@@ -2,13 +2,13 @@
 
 MAUVE is a library built on PyTorch and HuggingFace Transformers to measure the gap between neural text and human text 
 with the eponymous MAUVE measure, 
-introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf) (NeurIPS 2021 Oral).
+introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf) (NeurIPS 2021, Outstanding Paper Award).
 
 MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences. 
 
 ### [Documentation Link](krishnap25.github.io/mauve/)
 
-### _New: MAUVE is available via [HuggingFace Datasets](https://huggingface.co/docs/datasets/how_to_metrics.html)!_
+### _New: MAUVE is available via [HuggingFace Metrics](https://huggingface.co/docs/datasets/how_to_metrics.html)!_
 
 
 **Features**:
@@ -212,6 +212,11 @@ MAUVE is quite different from most metrics in common use, so here are a few guid
     - In this case, try reducing the clustering hyperparameters: 
         set `kmeans_num_redo` to `1`, and if this does not work, `kmeans_max_iter` to `100`.
         This enables the clustering to run faster at the cost of returning a worse clustering. 
+        
+6. **MAUVE's variance is large relative to the differences we try to quantify**: 
+    - We observed that is quite easy to capture basic errors with MAUVE but much harder to quantify subtle errors (e.g., when trying to improve over nucleus sampling).
+    - To measure subtle differences with confidence, the best solution is to use better embeddings, if you have access to them.
+    - You might also want to consider more random runs to reduce the variance: more number of k-means seeds (cheapest in terms of compute), more number of generation seeds (for sampling based algorithms), or larger number of text samples.
     
 ## Citation
 If you find this package useful, or you use it in your research, please cite:
