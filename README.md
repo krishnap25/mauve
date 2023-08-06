@@ -1,14 +1,15 @@
 # MAUVE
 
-MAUVE is a library built on PyTorch and HuggingFace Transformers to measure the gap between neural text and human text 
-with the eponymous MAUVE measure, 
-introduced [in this paper](https://arxiv.org/pdf/2102.01454.pdf) (NeurIPS 2021, Outstanding Paper Award).
+This is a library built on PyTorch and HuggingFace Transformers to measure the gap between neural text and human text
+with the MAUVE measure, 
+introduced [in this NeurIPS 2021 paper](https://arxiv.org/pdf/2102.01454.pdf) (Outstanding Paper Award) and [this 2022 paper](https://arxiv.org/pdf/2212.14578.pdf).
 
-MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences. 
+
+MAUVE is a measure of the gap between neural text and human text. It is computed using the Kullback–Leibler (KL) divergences between the two distributions of text in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.
 
 ### [Documentation Link](krishnap25.github.io/mauve/)
 
-### _New: MAUVE is available via [HuggingFace Metrics](https://huggingface.co/docs/datasets/how_to_metrics.html)!_
+### _New: MAUVE is available via [HuggingFace Evaluate](https://huggingface.co/spaces/evaluate-metric/mauve)!_
 
 
 **Features**:

@@ -3,11 +3,13 @@
 MAUVE: Measuring the Gap Between Neural Text and Human Text
 ==================================================================================
 
-MAUVE is a library built on PyTorch and HuggingFace Transformers to measure the gap between 
-neural text and human text with the eponymous MAUVE measure, introduced in 
-`this paper <https://arxiv.org/pdf/2102.01454.pdf>`_, which is presented as an oral at NeurIPS 2021.
+This is a library built on PyTorch and HuggingFace Transformers to measure the gap between 
+neural text and human text with the MAUVE measure, introduced in 
+`this NeurIPS 2021 paper <https://arxiv.org/pdf/2102.01454.pdf>`_ (Outstanding Paper Award) and a deeper dive in `this paper <https://arxiv.org/pdf/2212.14578.pdf>`_.
 
-MAUVE summarizes both Type I and Type II errors measured softly using Kullback–Leibler (KL) divergences.
+MAUVE is computed using the Kullback–Leibler (KL) divergences between the two distributions of text in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.
+
+MAUVE is now also available via `HuggingFace Evaluate <https://huggingface.co/spaces/evaluate-metric/mauve>`_.
 
 .. image:: ../fig/mauve.png
    :width: 100 %
@@ -197,6 +199,13 @@ If you find this package useful, or you use it in your research, please cite:
       author={Liu, Lang and Pillutla, Krishna and  Welleck, Sean and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
       booktitle = {NeurIPS},
       year      = {2021}
+    }
+
+    @article{pillutla-etal:mauve:preprint2022,
+      title={{MAUVE Scores for Generative Models: Theory and Practice}},
+      author={Pillutla, Krishna and Liu, Lang and Thickstun, John and Welleck, Sean and Swayamdipta, Swabha and Zellers, Rowan and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
+      journal = {arXiv Preprint},
+      year      = {2022}
     }
 
 
