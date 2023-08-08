@@ -125,3 +125,59 @@ def featurize_tokens_from_model(model, tokenized_texts, batch_size, name="", ver
     if verbose:
         print(f'Featurize time: {round(t2-t1, 2)}')
     return torch.cat(feats)
+
+
+@torch.no_grad()
+def featurize_tokens_from_model_sequence(model, tokenized_texts, batch_size):
+    device = next(model.parameters()).device
+    feats, chunks, chunk_sent_lengths = [], [], []
+    chunk_idx = 0
+
+    all_times = []
+    while chunk_idx * batch_size < len(tokenized_texts):
+        _chunk = [
+            _t.view(-1)
+            for _t in tokenized_texts[
+                chunk_idx * batch_size : (chunk_idx + 1) * batch_size
+            ]
+        ]
+        chunks.append(_chunk)
+        chunk_sent_lengths.append([len(_c) for _c in _chunk])
+        chunk_idx += 1
+
+    for chunk, chunk_sent_length in zip(chunks, chunk_sent_lengths):
+        padded_chunk = torch.nn.utils.rnn.pad_sequence(chunk, batch_first=True, padding_value=0).to(device)
+
+        attention_mask = torch.nn.utils.rnn.pad_sequence(
+            [torch.ones(sent_length).long() for sent_length in chunk_sent_length],
+            batch_first=True,
+            padding_value=0,
+        ).to(device)
+
+        outs = model(
+            input_ids=padded_chunk,
+            attention_mask=attention_mask,
+            past_key_values=None,
+            output_hidden_states=True,
+            return_dict=True,
+        )
+
+        # sample times is [samples, their length]
+        sample_times = []
+        for sample, sample_length in zip(outs.hidden_states[-1], chunk_sent_length):
+            sample_time_embeddings = []
+            for i in range(sample_length):
+                # add the embedding of the current token
+                sample_time_embeddings.append(sample[i])
+            sample_times.append(sample_time_embeddings)
+
+        for t in range(max(chunk_sent_length)):
+            if len(all_times) <= t:
+                all_times.append([])
+            for s in sample_times:
+                if t < len(s):
+                    all_times[t].append(s[t])
+                else:
+                    all_times[t].append(s[-1])
+
+    return all_times  # of dimension (time, sample, embedding)

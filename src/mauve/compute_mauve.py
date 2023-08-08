@@ -25,10 +25,87 @@ except (ImportError, ModuleNotFoundError):
 
 if FOUND_TORCH and FOUND_TRANSFORMERS:
     # only needed for tokenizing
-    from .utils import get_tokenizer, get_model, featurize_tokens_from_model, get_device_from_arg
+    from .utils import get_tokenizer, get_model, featurize_tokens_from_model, get_device_from_arg, featurize_tokens_from_model_sequence
 
 
 MODEL, TOKENIZER, MODEL_NAME = None, None, None
+
+def compute_s_mauve(p_text, q_text, model_name, batch_size):
+    from transformers import AutoTokenizer, AutoModel
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModel.from_pretrained(model_name, pad_token_id=tokenizer.eos_token_id)
+
+    def encode(texts):
+        return [
+            tokenizer.encode(
+                sen, return_tensors="pt", truncation=True, max_length=1024
+            )
+            for sen in texts
+        ]
+    p_features_sequence = featurize_tokens_from_model_sequence(model, encode(p_text), batch_size)
+    q_features_sequence = featurize_tokens_from_model_sequence(model, encode(q_text), batch_size)
+
+    scores = []
+    for p_feats, q_feats in zip(p_features_sequence, q_features_sequence):
+        out = compute_s_mauve_helper(p_features=p_feats, q_features=q_feats)
+        scores.append(out.mauve)
+    return scores
+
+def compute_s_mauve_helper(
+    p_features,
+    q_features,
+    num_buckets="auto",
+    pca_max_data=-1,
+    kmeans_explained_var=0.9,
+    kmeans_num_redo=5,
+    kmeans_max_iter=500,
+    divergence_curve_discretization_size=25,
+    mauve_scaling_factor=5,
+    seed=25,):
+    """
+    This function is similar to compute_mauve, but there are some subtle
+    differences that make it necessary to either add some if-else statements
+    to compute_mauve, or copy paste it as here. Copy-pasting
+    was chosen in order not to mess with the original code.
+    """
+
+    num_buckets = max(2, int(round(min(len(p_features), len(q_features)) / 10)))
+    p, q = cluster_feats(
+        p_features,
+        q_features,
+        num_clusters=num_buckets,
+        norm="l2",
+        whiten=False,
+        pca_max_data=pca_max_data,
+        explained_variance=kmeans_explained_var,
+        num_redo=kmeans_num_redo,
+        max_iter=kmeans_max_iter,
+        seed=seed,
+        s_mauve=True
+    )
+
+    # Divergence curve and mauve
+    mixture_weights = np.linspace(1e-6, 1 - 1e-6, divergence_curve_discretization_size)
+    divergence_curve = get_divergence_curve_for_multinomials(
+        p, q, mixture_weights, mauve_scaling_factor
+    )
+    x, y = divergence_curve.T
+    idxs1 = np.argsort(x)
+    idxs2 = np.argsort(y)
+    mauve_score = 0.5 * (
+        compute_area_under_curve(x[idxs1], y[idxs1])
+        + compute_area_under_curve(y[idxs2], x[idxs2])
+    )
+    fi_score = get_fronter_integral(p, q)
+    to_return = SimpleNamespace(
+        p_hist=p,
+        q_hist=q,
+        divergence_curve=divergence_curve,
+        mauve=mauve_score,
+        frontier_integral=fi_score,
+        num_buckets=num_buckets,
+    )
+    return to_return
 
 def compute_mauve(
         p_features=None, q_features=None,
@@ -38,7 +115,7 @@ def compute_mauve(
         kmeans_num_redo=5, kmeans_max_iter=500,
         featurize_model_name='gpt2-large', device_id=-1, max_text_length=1024,
         divergence_curve_discretization_size=25, mauve_scaling_factor=5,
-        verbose=False, seed=25, batch_size=1, use_float64=False,
+        verbose=False, seed=25, batch_size=1, use_float64=False
 ):
 
     """
@@ -110,7 +187,7 @@ def compute_mauve(
                          explained_variance=kmeans_explained_var,
                          num_redo=kmeans_num_redo,
                          max_iter=kmeans_max_iter,
-                         seed=seed, verbose=verbose)
+                         seed=seed, verbose=verbose, s_mauve=s_mauve)
     t2 = time.time()
     if verbose:
         print('total discretization time:', round(t2-t1, 2), 'seconds')
@@ -186,12 +263,16 @@ def cluster_feats(p, q, num_clusters,
                   pca_max_data=-1,
                   explained_variance=0.9,
                   num_redo=5, max_iter=500,
-                  seed=0, verbose=False):
+                  seed=0, verbose=False, s_mauve=False):
     assert 0 < explained_variance < 1
     if verbose:
         print(f'seed = {seed}')
     assert norm in ['none', 'l2', 'l1', None]
-    data1 = np.vstack([q, p])
+
+    if s_mauve:
+        data1 = np.vstack([[t.numpy() for t in p], [t.numpy() for t in q]])
+    else:
+        data1 = np.vstack([q, p])
     if norm in ['l2', 'l1']:
         data1 = normalize(data1, norm=norm, axis=1)
     pca = PCA(n_components=None, whiten=whiten, random_state=seed+1)
