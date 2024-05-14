@@ -220,8 +220,15 @@ MAUVE is quite different from most metrics in common use, so here are a few guid
     - You might also want to consider more random runs to reduce the variance: more number of k-means seeds (cheapest in terms of compute), more number of generation seeds (for sampling based algorithms), or larger number of text samples.
     
 ## Citation
-If you find this package useful, or you use it in your research, please cite:
+If you find this package useful, or you use it in your research, please cite the following papers:
 ```
+@article{pillutla-etal:mauve:jmlr2023,
+  title={{MAUVE Scores for Generative Models: Theory and Practice}},
+  author={Pillutla, Krishna and Liu, Lang and Thickstun, John and Welleck, Sean and Swayamdipta, Swabha and Zellers, Rowan and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
+  journal={JMLR},
+  year={2023}
+}
+
 @inproceedings{pillutla-etal:mauve:neurips2021,
   title={MAUVE: Measuring the Gap Between Neural Text and Human Text using Divergence Frontiers},
   author={Pillutla, Krishna and Swayamdipta, Swabha and Zellers, Rowan and Thickstun, John and Welleck, Sean and Choi, Yejin and Harchaoui, Zaid},
@@ -229,15 +236,13 @@ If you find this package useful, or you use it in your research, please cite:
   year      = {2021}
 }
 
-```
-Further, the Frontier Integral was introduced in this paper:
-```
-@inproceedings{liu-etal:divergence:neurips2021,
+@inproceedings{liu-etal:mauve-theory:neurips2021,
   title={{Divergence Frontiers for Generative Models: Sample Complexity, Quantization Effects, and Frontier Integrals}},
-  author={Liu, Lang and Pillutla, Krishna and  Welleck, Sean and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
-  booktitle = {NeurIPS},
-  year      = {2021}
+  author={Liu, Lang and Pillutla, Krishna and Welleck, Sean and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
+  booktitle={NeurIPS},
+  year={2021}
 }
+
 ```
     
 ## Acknowledgements
