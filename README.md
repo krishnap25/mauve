@@ -5,9 +5,9 @@ with the MAUVE measure,
 introduced [in this NeurIPS 2021 paper](https://arxiv.org/pdf/2102.01454.pdf) (Outstanding Paper Award) and [this 2022 paper](https://arxiv.org/pdf/2212.14578.pdf).
 
 
-MAUVE is a measure of the gap between neural text and human text. It is computed using the Kullback–Leibler (KL) divergences between the two distributions of text in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.
+MAUVE is a measure of the gap between neural text and human text. It is computed using the Kullback–Leibler (KL) divergences between the two text distributions in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.
 
-### [Documentation Link](krishnap25.github.io/mauve/)
+### [Documentation Link](https://krishnap25.github.io/mauve/)
 
 ### _New: MAUVE is available via [HuggingFace Evaluate](https://huggingface.co/spaces/evaluate-metric/mauve)!_
 
