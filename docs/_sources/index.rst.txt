@@ -5,9 +5,13 @@ MAUVE: Measuring the Gap Between Neural Text and Human Text
 
 This is a library built on PyTorch and HuggingFace Transformers to measure the gap between 
 neural text and human text with the MAUVE measure, introduced in 
-`this NeurIPS 2021 paper <https://arxiv.org/pdf/2102.01454.pdf>`_ (Outstanding Paper Award) and a deeper dive in `this paper <https://arxiv.org/pdf/2212.14578.pdf>`_.
+`this NeurIPS 2021 paper <https://arxiv.org/pdf/2102.01454.pdf>`_ (Outstanding Paper Award) and a deeper dive in `this JMLR 2023 paper <https://arxiv.org/pdf/2212.14578.pdf>`_.
 
-MAUVE is computed using the Kullback–Leibler (KL) divergences between the two distributions of text in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.
+MAUVE is obtained by computing Kullback–Leibler (KL) divergences between the two distributions in a quantized embedding space of a foundation model.
+
+In the text setting, it is natural to use embeddings from a pretrained large language model. It can quantify differences in the quality of generated text based on the size of the model, the decoding algorithm, and the length of the generated text. MAUVE was found to correlate the strongest with human evaluations over baseline metrics for open-ended text generation.
+
+MAUVE can work with other modalities such as images, speech, music, or video, as long as domain-appropriate embeddings are obtained. Our API supports directly passing in such embeddings.
 
 MAUVE is now also available via `HuggingFace Evaluate <https://huggingface.co/spaces/evaluate-metric/mauve>`_.
 
@@ -19,7 +23,8 @@ The main features are:
 * MAUVE with k-means quantization
 * Adaptive selection of k-means hyperparameters 
 * Compute MAUVE with text already encoded or use HuggingFace Transformers + PyTorch to compute encodings
-* Implementation of the `Frontier Intergal`, another divergence measure proposed in `this paper <https://arxiv.org/pdf/2106.07898.pdf>`_.
+* Implementation of the `Frontier Intergal`, another divergence measure proposed in `this NeurIPS 2021 paper <https://arxiv.org/pdf/2106.07898.pdf>`_.
+* Implementation of Krichevsky-Trofimov smoothing for smoothed divergence estimators (`mauve_star` and `frontier_integral_star`), as proposed in our `JMLR 2023 paper <https://arxiv.org/pdf/2212.14578.pdf>`_.
 
 
 Table of Contents
@@ -87,10 +92,11 @@ We can now compute MAUVE as follows (note that this requires installation of PyT
     >>> out = mauve.compute_mauve(p_text=p_text, q_text=q_text, device_id=0, max_text_length=256, verbose=False)
     >>> print(out.mauve) # prints 0.9917
 
-This first downloads GPT-2 large tokenizer and pre-trained model (if you do not have them downloaded already). Even if you have the model offline, it takes it up to 30 seconds to load the model the first time. out now contains the fields:
+This first downloads GPT-2 large tokenizer and pre-trained model (if you do not have them downloaded already). Even if you have the model offline, it takes it up to 30 seconds to load the model the first time. ``out`` now contains the fields:
 
-* ``out.mauve``: MAUVE score, a number between 0 and 1
-* ``out.frontier_integral``: a scalar divergence measure between P and Q, proposed in `this paper <https://arxiv.org/pdf/2106.07898.pdf>`_
+* ``out.mauve``: MAUVE score, a number between 0 and 1 (higher values indicate that Q is closer to P)
+* ``out.frontier_integral``: a scalar divergence measure between P and Q, proposed in `this paper <https://arxiv.org/pdf/2106.07898.pdf>`_ (lower values indicate that Q is closer to P)
+* ``out.mauve_star`` and ``out.mauve_frontier_integral_star``: The corresponding versions with Krichevksy-Trofimov smoothing, as proposed in `this JMLR 2023 paper <https://arxiv.org/pdf/2212.14578.pdf>`_
 * ``out.divergence_curve``: a ``numpy.ndarray`` of shape (m, 2); plot it with matplotlib to view the divergence curve
 * ``out.p_hist``: a discrete distribution, which is a quantized version of the text distribution p_text
 * ``out.q_hist``: same as above, but with q_text
@@ -111,6 +117,8 @@ For each text (in both p_text and q_text), MAUVE internally uses the terimal hid
     >>> p_feats = np.random.randn(100, 1024)  # feature dimension = 1024
     >>> q_feats = np.random.randn(100, 1024)
     >>> out = mauve.compute_mauve(p_features=p_feats, q_features=q_feats)
+
+The above functionality is helpful when using MAUVE with other modalities, as long as domain-appropriate features are obtained.
 
 You can also compute MAUVE using the tokenized (BPE) representation using the GPT-2 vocabulary (e.g., obtained from using an explicit call to transformers.GPT2Tokenizer).
 
@@ -187,6 +195,13 @@ If you find this package useful, or you use it in your research, please cite:
 
 .. code-block::
 
+    @article{pillutla-etal:mauve:jmlr2023,
+      title={{MAUVE Scores for Generative Models: Theory and Practice}},
+      author={Pillutla, Krishna and Liu, Lang and Thickstun, John and Welleck, Sean and Swayamdipta, Swabha and Zellers, Rowan and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
+      journal={JMLR},
+      year={2023}
+    }
+
     @inproceedings{pillutla-etal:mauve:neurips2021,
       title={MAUVE: Measuring the Gap Between Neural Text and Human Text using Divergence Frontiers},
       author={Pillutla, Krishna and Swayamdipta, Swabha and Zellers, Rowan and Thickstun, John and Welleck, Sean and Choi, Yejin and Harchaoui, Zaid},
@@ -194,19 +209,13 @@ If you find this package useful, or you use it in your research, please cite:
       year      = {2021}
     }
 
-    @inproceedings{liu-etal:divergence:neurips2021,
+    @inproceedings{liu-etal:mauve-theory:neurips2021,
       title={{Divergence Frontiers for Generative Models: Sample Complexity, Quantization Effects, and Frontier Integrals}},
-      author={Liu, Lang and Pillutla, Krishna and  Welleck, Sean and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
-      booktitle = {NeurIPS},
-      year      = {2021}
+      author={Liu, Lang and Pillutla, Krishna and Welleck, Sean and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
+      booktitle={NeurIPS},
+      year={2021}
     }
 
-    @article{pillutla-etal:mauve:preprint2022,
-      title={{MAUVE Scores for Generative Models: Theory and Practice}},
-      author={Pillutla, Krishna and Liu, Lang and Thickstun, John and Welleck, Sean and Swayamdipta, Swabha and Zellers, Rowan and Oh, Sewoong and Choi, Yejin and Harchaoui, Zaid},
-      journal = {arXiv Preprint},
-      year      = {2022}
-    }
 
 
 Acknowledgments

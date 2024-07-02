@@ -74,12 +74,14 @@ def compute_mauve(
         You might have to experiment to find the largest batch size that fits in your GPU memory.
         See `here <https://github.com/krishnap25/mauve/issues/8#issuecomment-1082075240>`_ for details.
 
-    :return: an object with fields p_hist, q_hist, divergence_curve and mauve.
+    :return: an object with fields mauve, frontier_integral, mauve_star, frontier_integral_star, p_hist, q_hist, divergence_curve, num_buckets.
 
     * ``out.mauve`` is a number between 0 and 1, the MAUVE score. Higher values means P is closer to Q.
     * ``out.frontier_integral``, a number between 0 and 1. Lower values mean that P is closer to Q. 
+    * ``out.mauve_star`` and ``out.frontier_integral_star``  are the corresponding variants with smoothing (see Pillutla et al., JMLR 2023).
     * ``out.p_hist`` is the obtained histogram for P. Same for ``out.q_hist``.
-    * ``out.divergence_curve`` contains the points in the divergence curve. It is of shape (m, 2), where m is ``divergence_curve_discretization_size``
+    * ``out.divergence_curve`` contains the points in the divergence curve. It is of shape (m, 2), where m is ``divergence_curve_discretization_size``.
+    * ``out.num_buckets`` is the quantization size and the shape of ``out.p_hist`` and ``out.q_hist``.
 
     """
 
@@ -96,26 +98,24 @@ def compute_mauve(
         device_id, name="q", verbose=verbose, batch_size=batch_size, use_float64=use_float64,
     )
     if num_buckets == 'auto':
-        # heuristic: use num_clusters = num_generations / 10
+        # Heuristic: use num_clusters = num_generations / 10.
         num_buckets = max(2, int(round(min(p_features.shape[0], q_features.shape[0]) / 10)))
     elif not isinstance(num_buckets, int):
         raise ValueError('num_buckets is expected to be an integer or "auto"')
 
-    # Acutal binning
+    # Bin the features into histograms.
     t1 = time.time()
-    p, q = cluster_feats(p_features, q_features,
-                         num_clusters=num_buckets,
-                         norm='l2', whiten=False,
-                         pca_max_data=pca_max_data,
-                         explained_variance=kmeans_explained_var,
-                         num_redo=kmeans_num_redo,
-                         max_iter=kmeans_max_iter,
-                         seed=seed, verbose=verbose)
+    p, q, p_smoothed, q_smoothed = cluster_feats(
+        p_features, q_features, num_clusters=num_buckets,
+        norm='l2', whiten=False, pca_max_data=pca_max_data,
+        explained_variance=kmeans_explained_var, num_redo=kmeans_num_redo,
+        max_iter=kmeans_max_iter, seed=seed, verbose=verbose
+    )
     t2 = time.time()
     if verbose:
         print('total discretization time:', round(t2-t1, 2), 'seconds')
 
-    # Divergence curve and mauve
+    # Divergence curve and MAUVE (no smoothing).
     mixture_weights = np.linspace(1e-6, 1-1e-6, divergence_curve_discretization_size)
     divergence_curve = get_divergence_curve_for_multinomials(p, q, mixture_weights, mauve_scaling_factor)
     x, y = divergence_curve.T
@@ -126,10 +126,19 @@ def compute_mauve(
         compute_area_under_curve(y[idxs2], x[idxs2])
     )
     fi_score = get_fronter_integral(p, q)
+
+    # Divergence curve and MAUVE (with smoothing).
+    x_s, y_s = get_divergence_curve_for_multinomials(p_smoothed, q_smoothed, mixture_weights, mauve_scaling_factor).T
+    idxs1, idxs2 = np.argsort(x_s), np.argsort(y_s)
+    mauve_star = 0.5 * (
+        compute_area_under_curve(x_s[idxs1], y_s[idxs1]) +
+        compute_area_under_curve(y_s[idxs2], x_s[idxs2])
+    )
+    fi_star = get_fronter_integral(p_smoothed, q_smoothed)
     to_return = SimpleNamespace(
         p_hist=p, q_hist=q, divergence_curve=divergence_curve, 
-        mauve=mauve_score,
-        frontier_integral=fi_score,
+        mauve=mauve_score, frontier_integral=fi_score,
+        mauve_star=mauve_star, frontier_integral_star=fi_star,
         num_buckets=num_buckets,
     )
     return to_return
@@ -139,7 +148,7 @@ def get_features_from_input(features, tokenized_texts, texts,
                             verbose=False, use_float64=False):
     global MODEL, TOKENIZER, MODEL_NAME
     if features is None:
-        # Featurizing is necessary. Make sure the required packages are available
+        # Featurizing is necessary. Make sure the required packages are available.
         if not FOUND_TORCH:
             raise ModuleNotFoundError(
                 """PyTorch not found. Please install PyTorch if you would like to use the featurization.
@@ -154,7 +163,10 @@ def get_features_from_input(features, tokenized_texts, texts,
                 """)
 
         if tokenized_texts is None:
-            # tokenize texts
+            # Tokenize texts.
+            texts = [sen for sen in texts if len(sen) > 0]  # Remove empty strings.
+            if len(texts) == 0:
+                raise ValueError(f'Variable `{name}_text` is empty. Please provide non-empty strings.')
             if TOKENIZER is None or MODEL_NAME != featurize_model_name:
                 if verbose: print('Loading tokenizer')
                 TOKENIZER = get_tokenizer(featurize_model_name)
@@ -163,7 +175,12 @@ def get_features_from_input(features, tokenized_texts, texts,
                 TOKENIZER.encode(sen, return_tensors='pt', truncation=True, max_length=max_len)
                 for sen in texts
             ]
-        # use tokenized_texts to featurize
+        else:
+            # Make sure tokenized texts are not empty.
+            if len(tokenized_texts) == 0:
+                raise ValueError(f'Variable `{name}_tokens` is empty. Please provide non-empty tokenized texts.')
+    
+        # Use tokenized_texts to featurize.
         if TOKENIZER is None or MODEL_NAME != featurize_model_name:
             if verbose: print('Loading tokenizer')
             TOKENIZER = get_tokenizer(featurize_model_name)
@@ -179,6 +196,8 @@ def get_features_from_input(features, tokenized_texts, texts,
         features = featurize_tokens_from_model(MODEL, tokenized_texts, batch_size, name).detach().cpu().numpy()
     else:
         features = np.asarray(features)
+        if features.shape[0] == 0:
+            raise ValueError(f'Variable `{name}_features` is an empty array. Please provide non-empty features.')
     return features
 
 def cluster_feats(p, q, num_clusters,
@@ -188,6 +207,10 @@ def cluster_feats(p, q, num_clusters,
                   num_redo=5, max_iter=500,
                   seed=0, verbose=False):
     assert 0 < explained_variance < 1
+    def _normalize(array):
+        # Normalize sum of array to 1.
+        # We assume non-negative entries with non-zero sum.
+        return array / array.sum()
     if verbose:
         print(f'seed = {seed}')
     assert norm in ['none', 'l2', 'l1', None]
@@ -208,8 +231,8 @@ def cluster_feats(p, q, num_clusters,
     if verbose:
         print(f'performing clustering in lower dimension = {idx}')
     data1 = pca.transform(data1)[:, :idx+1]
-    # Cluster
-    data1 = data1.astype(np.float32)
+    # Cluster features and obtain the labels for each data point.
+    data1 = data1.astype(np.float32)  # Faiss requires float32.
     t1 = time.time()
     kmeans = faiss.Kmeans(data1.shape[1], num_clusters, niter=max_iter,
                           verbose=verbose, nredo=num_redo, update_index=True,
@@ -224,11 +247,23 @@ def cluster_feats(p, q, num_clusters,
     q_labels = labels[:len(q)]
     p_labels = labels[len(q):]
 
-    q_bins = np.histogram(q_labels, bins=num_clusters,
-                           range=[0, num_clusters], density=True)[0]
-    p_bins = np.histogram(p_labels, bins=num_clusters,
-                          range=[0, num_clusters], density=True)[0]
-    return p_bins / p_bins.sum(), q_bins / q_bins.sum()
+    # Convert cluster labels to histograms.
+    q_bin_counts = np.histogram(
+        q_labels, bins=num_clusters,
+        range=[0, num_clusters], density=False
+    )[0]
+    p_bin_counts = np.histogram(
+        p_labels, bins=num_clusters,
+        range=[0, num_clusters], density=False
+    )[0]
+    # Histograms without smoothing (used for the original MAUVE).
+    p_hist = _normalize(p_bin_counts)
+    q_hist = _normalize(q_bin_counts)
+    # Histograms with Krichevsky-Trofimov smoothing.
+    # Used for MAUVE* suggested by by Pillutla et al. (JMLR 2023).
+    p_hist_smoothed = _normalize(p_bin_counts + 0.5)
+    q_hist_smoothed = _normalize(q_bin_counts + 0.5)
+    return p_hist, q_hist, p_hist_smoothed, q_hist_smoothed
 
 
 def kl_multinomial(p, q):
@@ -241,7 +276,6 @@ def kl_multinomial(p, q):
 
 
 def get_divergence_curve_for_multinomials(p, q, mixture_weights, scaling_factor):
-    # TODO: check if extreme points are needed
     divergence_curve = [[0, np.inf]] # extreme point
     for w in np.sort(mixture_weights):
         r = w * p + (1 - w) * q

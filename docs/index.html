@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="Python" >
+<html lang="Python" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>MAUVE: Measuring the Gap Between Neural Text and Human Text &#8212; MAUVE</title>
   
@@ -19,25 +18,26 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=362ab14a" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=d35fbb86"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -50,7 +50,15 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -85,18 +93,21 @@
 </form></div>
   </div>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
   </label>
   
-  <div class="navbar-header-items__start">
+  
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
+
   
 
 <a class="navbar-brand logo" href="#">
+  
   
   
   
@@ -108,18 +119,12 @@
     
   </div>
   
-  
   <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
-        <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+        <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
   </ul>
@@ -132,23 +137,27 @@
       
         <div class="navbar-item navbar-persistent--container">
           
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
         <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -159,27 +168,35 @@ document.write(`
   
   
     <div class="navbar-persistent--mobile">
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
   
 </div>
 
-    </nav>
+    </header>
   
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
@@ -190,13 +207,8 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item"><nav class="navbar-nav">
-  <p class="sidebar-header-items__title"
-     role="heading"
-     aria-level="1"
-     aria-label="Site Navigation">
-    Site Navigation
-  </p>
+          <div class="navbar-item">
+<nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
     
   </ul>
@@ -209,12 +221,13 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
+
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script></div>
@@ -244,25 +257,29 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="mauve-measuring-the-gap-between-neural-text-and-human-text">
-<h1>MAUVE: Measuring the Gap Between Neural Text and Human Text<a class="headerlink" href="#mauve-measuring-the-gap-between-neural-text-and-human-text" title="Permalink to this heading">#</a></h1>
+<h1>MAUVE: Measuring the Gap Between Neural Text and Human Text<a class="headerlink" href="#mauve-measuring-the-gap-between-neural-text-and-human-text" title="Link to this heading">#</a></h1>
 <p>This is a library built on PyTorch and HuggingFace Transformers to measure the gap between
 neural text and human text with the MAUVE measure, introduced in
-<a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">this NeurIPS 2021 paper</a> (Outstanding Paper Award) and a deeper dive in <a class="reference external" href="https://arxiv.org/pdf/2212.14578.pdf">this paper</a>.</p>
-<p>MAUVE is computed using the Kullback–Leibler (KL) divergences between the two distributions of text in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.</p>
+<a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">this NeurIPS 2021 paper</a> (Outstanding Paper Award) and a deeper dive in <a class="reference external" href="https://arxiv.org/pdf/2212.14578.pdf">this JMLR 2023 paper</a>.</p>
+<p>MAUVE is obtained by computing Kullback–Leibler (KL) divergences between the two distributions in a quantized embedding space of a foundation model.</p>
+<p>In the text setting, it is natural to use embeddings from a pretrained large language model. It can quantify differences in the quality of generated text based on the size of the model, the decoding algorithm, and the length of the generated text. MAUVE was found to correlate the strongest with human evaluations over baseline metrics for open-ended text generation.</p>
+<p>MAUVE can work with other modalities such as images, speech, music, or video, as long as domain-appropriate embeddings are obtained. Our API supports directly passing in such embeddings.</p>
 <p>MAUVE is now also available via <a class="reference external" href="https://huggingface.co/spaces/evaluate-metric/mauve">HuggingFace Evaluate</a>.</p>
-<a class="reference internal image-reference" href="_images/mauve.png"><img alt="_images/mauve.png" src="_images/mauve.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="_images/mauve.png"><img alt="_images/mauve.png" src="_images/mauve.png" style="width: 100%;" />
+</a>
 <p>The main features are:</p>
 <ul class="simple">
 <li><p>MAUVE with k-means quantization</p></li>
 <li><p>Adaptive selection of k-means hyperparameters</p></li>
 <li><p>Compute MAUVE with text already encoded or use HuggingFace Transformers + PyTorch to compute encodings</p></li>
-<li><p>Implementation of the <cite>Frontier Intergal</cite>, another divergence measure proposed in <a class="reference external" href="https://arxiv.org/pdf/2106.07898.pdf">this paper</a>.</p></li>
+<li><p>Implementation of the <cite>Frontier Intergal</cite>, another divergence measure proposed in <a class="reference external" href="https://arxiv.org/pdf/2106.07898.pdf">this NeurIPS 2021 paper</a>.</p></li>
+<li><p>Implementation of Krichevsky-Trofimov smoothing for smoothed divergence estimators (<cite>mauve_star</cite> and <cite>frontier_integral_star</cite>), as proposed in our <a class="reference external" href="https://arxiv.org/pdf/2212.14578.pdf">JMLR 2023 paper</a>.</p></li>
 </ul>
 <section id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="#installation"><span class="std std-ref">Installation</span></a></p></li>
 <li><p><a class="reference internal" href="#quick-start"><span class="std std-ref">Quick Start</span></a></p></li>
@@ -276,7 +293,7 @@ neural text and human text with the MAUVE measure, introduced in
 </ul>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>Once you have PyTorch &gt;=1.7, you can grab MAUVE from pip:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>mauve-text
 </pre></div>
@@ -295,7 +312,7 @@ In addition, if you wish to use featurization within MAUVE, you need to manually
 </ul>
 </section>
 <section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
 <p>Let p_text and q_text each be a list of strings, where each string is a complete generation (including context). For best practice, MAUVE needs at least a few thousand generations each for p_text and q_text (the paper uses 5000 each). For our demo, we use 100 generations each for fast running time.</p>
 <p>To demonstrate the functionalities of this package on some real data, this repository provides some functionalities to download and use sample data in the <code class="docutils literal notranslate"><span class="pre">./examples</span></code> folder of the MAUVE github repository:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:krishnap25/mauve.git
@@ -316,17 +333,18 @@ $<span class="w"> </span>python<span class="w"> </span>examples/download_gpt2_da
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">mauve</span><span class="p">)</span> <span class="c1"># prints 0.9917</span>
 </pre></div>
 </div>
-<p>This first downloads GPT-2 large tokenizer and pre-trained model (if you do not have them downloaded already). Even if you have the model offline, it takes it up to 30 seconds to load the model the first time. out now contains the fields:</p>
+<p>This first downloads GPT-2 large tokenizer and pre-trained model (if you do not have them downloaded already). Even if you have the model offline, it takes it up to 30 seconds to load the model the first time. <code class="docutils literal notranslate"><span class="pre">out</span></code> now contains the fields:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">out.mauve</span></code>: MAUVE score, a number between 0 and 1</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">out.frontier_integral</span></code>: a scalar divergence measure between P and Q, proposed in <a class="reference external" href="https://arxiv.org/pdf/2106.07898.pdf">this paper</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.mauve</span></code>: MAUVE score, a number between 0 and 1 (higher values indicate that Q is closer to P)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.frontier_integral</span></code>: a scalar divergence measure between P and Q, proposed in <a class="reference external" href="https://arxiv.org/pdf/2106.07898.pdf">this paper</a> (lower values indicate that Q is closer to P)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">out.mauve_star</span></code> and <code class="docutils literal notranslate"><span class="pre">out.mauve_frontier_integral_star</span></code>: The corresponding versions with Krichevksy-Trofimov smoothing, as proposed in <a class="reference external" href="https://arxiv.org/pdf/2212.14578.pdf">this JMLR 2023 paper</a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">out.divergence_curve</span></code>: a <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of shape (m, 2); plot it with matplotlib to view the divergence curve</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">out.p_hist</span></code>: a discrete distribution, which is a quantized version of the text distribution p_text</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">out.q_hist</span></code>: same as above, but with q_text</p></li>
 </ul>
 </section>
 <section id="functionality">
-<h2>Functionality<a class="headerlink" href="#functionality" title="Permalink to this heading">#</a></h2>
+<h2>Functionality<a class="headerlink" href="#functionality" title="Link to this heading">#</a></h2>
 <p>We now describe other ways of using MAUVE.</p>
 <p>For each text (in both p_text and q_text), MAUVE internally uses the terimal hidden state from GPT-2 large as a feature representation. This feature encoding process can be rather slow (~10 mins for 5000 generations at a max length of 1024 on a GPU; but the implementation can be made more efficient, see <a class="reference internal" href="#contributing"><span class="std std-ref">Contributing</span></a>). Alternatively, this package allows you to use cached hidden states directly (this does not require PyTorch and HuggingFace Transformers to be installed):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># call mauve.compute_mauve using features obtained directly</span>
@@ -338,6 +356,7 @@ $<span class="w"> </span>python<span class="w"> </span>examples/download_gpt2_da
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">mauve</span><span class="o">.</span><span class="n">compute_mauve</span><span class="p">(</span><span class="n">p_features</span><span class="o">=</span><span class="n">p_feats</span><span class="p">,</span> <span class="n">q_features</span><span class="o">=</span><span class="n">q_feats</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>The above functionality is helpful when using MAUVE with other modalities, as long as domain-appropriate features are obtained.</p>
 <p>You can also compute MAUVE using the tokenized (BPE) representation using the GPT-2 vocabulary (e.g., obtained from using an explicit call to transformers.GPT2Tokenizer).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># call mauve.compute_mauve using tokens on GPU 1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># p_toks, q_toks are each a list of LongTensors of shape [1, length]</span>
@@ -352,7 +371,7 @@ $<span class="w"> </span>python<span class="w"> </span>examples/download_gpt2_da
 <p>Please see the <a class="reference external" href="mauve.html">detailed API here</a>.</p>
 </section>
 <section id="best-practices-for-mauve">
-<h2>Best Practices for MAUVE<a class="headerlink" href="#best-practices-for-mauve" title="Permalink to this heading">#</a></h2>
+<h2>Best Practices for MAUVE<a class="headerlink" href="#best-practices-for-mauve" title="Link to this heading">#</a></h2>
 <p>MAUVE is quite different from most metrics in common use, so here are a few guidelines on proper usage of MAUVE:</p>
 <p><strong>Use for relative comparisons rather than absolute evaluation</strong>:</p>
 <ul class="simple">
@@ -381,7 +400,7 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
 </ul>
 </section>
 <section id="contributing">
-<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h2>
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
 <p>If you find any bugs, please raise an issue on GitHub. If you would like to contribute, please submit a pull request. We encourage and highly value community contributions.</p>
 <p>Some features which would be good to have are:</p>
 <ul class="simple">
@@ -389,37 +408,37 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
 </ul>
 </section>
 <section id="authors">
-<h2>Authors<a class="headerlink" href="#authors" title="Permalink to this heading">#</a></h2>
+<h2>Authors<a class="headerlink" href="#authors" title="Link to this heading">#</a></h2>
 <p>This package is written and maintained by <a class="reference external" href="krishnap25.github.io">Krishna Pillutla</a>.</p>
 </section>
 <section id="cite">
-<h2>Cite<a class="headerlink" href="#cite" title="Permalink to this heading">#</a></h2>
+<h2>Cite<a class="headerlink" href="#cite" title="Link to this heading">#</a></h2>
 <p>If you find this package useful, or you use it in your research, please cite:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">pillutla</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">mauve</span><span class="p">:</span><span class="n">neurips2021</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">pillutla</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">mauve</span><span class="p">:</span><span class="n">jmlr2023</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="p">{{</span><span class="n">MAUVE</span> <span class="n">Scores</span> <span class="k">for</span> <span class="n">Generative</span> <span class="n">Models</span><span class="p">:</span> <span class="n">Theory</span> <span class="ow">and</span> <span class="n">Practice</span><span class="p">}},</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span> <span class="n">Liu</span><span class="p">,</span> <span class="n">Lang</span> <span class="ow">and</span> <span class="n">Thickstun</span><span class="p">,</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Swayamdipta</span><span class="p">,</span> <span class="n">Swabha</span> <span class="ow">and</span> <span class="n">Zellers</span><span class="p">,</span> <span class="n">Rowan</span> <span class="ow">and</span> <span class="n">Oh</span><span class="p">,</span> <span class="n">Sewoong</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
+  <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">JMLR</span><span class="p">},</span>
+  <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nd">@inproceedings</span><span class="p">{</span><span class="n">pillutla</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">mauve</span><span class="p">:</span><span class="n">neurips2021</span><span class="p">,</span>
   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">MAUVE</span><span class="p">:</span> <span class="n">Measuring</span> <span class="n">the</span> <span class="n">Gap</span> <span class="n">Between</span> <span class="n">Neural</span> <span class="n">Text</span> <span class="ow">and</span> <span class="n">Human</span> <span class="n">Text</span> <span class="n">using</span> <span class="n">Divergence</span> <span class="n">Frontiers</span><span class="p">},</span>
   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span> <span class="n">Swayamdipta</span><span class="p">,</span> <span class="n">Swabha</span> <span class="ow">and</span> <span class="n">Zellers</span><span class="p">,</span> <span class="n">Rowan</span> <span class="ow">and</span> <span class="n">Thickstun</span><span class="p">,</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
   <span class="n">booktitle</span> <span class="o">=</span> <span class="p">{</span><span class="n">NeurIPS</span><span class="p">},</span>
   <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span><span class="mi">2021</span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nd">@inproceedings</span><span class="p">{</span><span class="n">liu</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">divergence</span><span class="p">:</span><span class="n">neurips2021</span><span class="p">,</span>
+<span class="nd">@inproceedings</span><span class="p">{</span><span class="n">liu</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">mauve</span><span class="o">-</span><span class="n">theory</span><span class="p">:</span><span class="n">neurips2021</span><span class="p">,</span>
   <span class="n">title</span><span class="o">=</span><span class="p">{{</span><span class="n">Divergence</span> <span class="n">Frontiers</span> <span class="k">for</span> <span class="n">Generative</span> <span class="n">Models</span><span class="p">:</span> <span class="n">Sample</span> <span class="n">Complexity</span><span class="p">,</span> <span class="n">Quantization</span> <span class="n">Effects</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Frontier</span> <span class="n">Integrals</span><span class="p">}},</span>
-  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Liu</span><span class="p">,</span> <span class="n">Lang</span> <span class="ow">and</span> <span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span>  <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Oh</span><span class="p">,</span> <span class="n">Sewoong</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
-  <span class="n">booktitle</span> <span class="o">=</span> <span class="p">{</span><span class="n">NeurIPS</span><span class="p">},</span>
-  <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span><span class="mi">2021</span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nd">@article</span><span class="p">{</span><span class="n">pillutla</span><span class="o">-</span><span class="n">etal</span><span class="p">:</span><span class="n">mauve</span><span class="p">:</span><span class="n">preprint2022</span><span class="p">,</span>
-  <span class="n">title</span><span class="o">=</span><span class="p">{{</span><span class="n">MAUVE</span> <span class="n">Scores</span> <span class="k">for</span> <span class="n">Generative</span> <span class="n">Models</span><span class="p">:</span> <span class="n">Theory</span> <span class="ow">and</span> <span class="n">Practice</span><span class="p">}},</span>
-  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span> <span class="n">Liu</span><span class="p">,</span> <span class="n">Lang</span> <span class="ow">and</span> <span class="n">Thickstun</span><span class="p">,</span> <span class="n">John</span> <span class="ow">and</span> <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Swayamdipta</span><span class="p">,</span> <span class="n">Swabha</span> <span class="ow">and</span> <span class="n">Zellers</span><span class="p">,</span> <span class="n">Rowan</span> <span class="ow">and</span> <span class="n">Oh</span><span class="p">,</span> <span class="n">Sewoong</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
-  <span class="n">journal</span> <span class="o">=</span> <span class="p">{</span><span class="n">arXiv</span> <span class="n">Preprint</span><span class="p">},</span>
-  <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span><span class="mi">2022</span><span class="p">}</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Liu</span><span class="p">,</span> <span class="n">Lang</span> <span class="ow">and</span> <span class="n">Pillutla</span><span class="p">,</span> <span class="n">Krishna</span> <span class="ow">and</span> <span class="n">Welleck</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Oh</span><span class="p">,</span> <span class="n">Sewoong</span> <span class="ow">and</span> <span class="n">Choi</span><span class="p">,</span> <span class="n">Yejin</span> <span class="ow">and</span> <span class="n">Harchaoui</span><span class="p">,</span> <span class="n">Zaid</span><span class="p">},</span>
+  <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">NeurIPS</span><span class="p">},</span>
+  <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2021</span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="acknowledgments">
-<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this heading">#</a></h2>
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
 <p>This work was supported by NSF DMS-2134012, NSF CCF-2019844, NSF DMS-2023166, the DARPA MCS program through NIWC Pacific (N66001-19-2-4031), the CIFAR &quot;Learning in Machines &amp; Brains&quot; program, a Qualcomm Innovation Fellowship, and faculty research awards.</p>
 </section>
 </section>
@@ -429,16 +448,12 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
               
               
               
-                <footer class="bd-footer-article">
+              
+              
+                <footer class="prev-next-footer">
                   
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -447,11 +462,14 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
@@ -466,6 +484,7 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
   </nav></div>
 
   <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="_sources/index.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -486,8 +505,8 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -495,6 +514,7 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
     <div class="footer-items__start">
       
         <div class="footer-item">
+
   <p class="copyright">
     
       © Copyright 2021, Authors.
@@ -504,8 +524,9 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
 </div>
       
         <div class="footer-item">
+
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
@@ -513,10 +534,12 @@ See <a class="reference external" href="https://arxiv.org/pdf/2102.01454.pdf">th
     </div>
   
   
+  
     <div class="footer-items__end">
       
-        <div class="footer-item"><p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
       
     </div>
