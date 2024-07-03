@@ -2,7 +2,7 @@
 
 This is a library built on PyTorch and HuggingFace Transformers to measure the gap between neural text and human text
 with the MAUVE measure, 
-introduced [in this NeurIPS 2021 paper](https://arxiv.org/pdf/2102.01454.pdf) (Outstanding Paper Award) and [this 2022 paper](https://arxiv.org/pdf/2212.14578.pdf).
+introduced  in [this NeurIPS 2021 paper](https://arxiv.org/pdf/2102.01454.pdf) (Outstanding Paper Award) and [this JMLR 2023 paper](https://arxiv.org/pdf/2212.14578.pdf).
 
 
 MAUVE is a measure of the gap between neural text and human text. It is computed using the Kullback–Leibler (KL) divergences between the two text distributions in a quantized embedding space of a large language model. MAUVE can identify differences in quality arising from model sizes and decoding algorithms.
@@ -17,9 +17,12 @@ MAUVE is a measure of the gap between neural text and human text. It is computed
 - Adaptive selection of *k*-means hyperparameters. 
 - Compute MAUVE using pre-computed GPT-2 features (i.e., terminal hidden state), 
     or featurize raw text using HuggingFace transformers + PyTorch.
+- MAUVE can also be used for other modalities (e.g. images or audio): pass in pre-computed feature embeddings to our API.
+
+Further details can be found below.
 
 For scripts to reproduce the experiments in the paper, please see 
-[this repo](https://github.com/krishnap25/mauve-experiments).
+[this repository](https://github.com/krishnap25/mauve-experiments).
 
 ## Installation
 
@@ -91,6 +94,7 @@ Even if you have the model offline, it takes it up to 30 seconds to load the mod
 `out` now contains the fields:
 - `out.mauve`: MAUVE score, a number between 0 and 1. Larger values indicate that P and Q are closer.
 - `out.frontier_integral`: Frontier Integral, a number between 0 and 1. Smaller values indicate that P and Q are closer.
+- `out.mauve_star` and `out.frontier_integral_star`: their corresponding versions computed with Krichevsky-Trofimov smoothing. See [this JMLR 2023 paper](https://arxiv.org/pdf/2212.14578.pdf) on why this could be preferable.
 - `out.divergence_curve`: a `numpy.ndarray` of shape (m, 2); plot it with matplotlib to view the divergence curve
 - `out.p_hist`: a discrete distribution, which is a quantized version of the text distribution `p_text`
 - `out.q_hist`: same as above, but with `q_text`  
@@ -104,11 +108,9 @@ plt.plot(out.divergence_curve[:, 1], out.divergence_curve[:, 0])
 
 ## Other Ways of Using MAUVE 
 For each text (in both `p_text` and `q_text`), 
-MAUVE internally uses the terimal hidden state from GPT-2 large as a feature representation.
-This featurization process can be rather slow 
-(~10 mins for 5000 generations at a max length of 1024; 
-but the implementation can be made more efficient, see [Contributing](#contributing)).
-Alternatively, this package allows you to use cached hidden states directly
+MAUVE internally uses the terimal hidden state from GPT-2 large as a feature representation. Of course, more recent LLMs can also be used. Generally, the better the feature embeddings, the better is the performance of MAUVE.
+
+There are multiple ways to use this package. For instance, you can use cached hidden states directly
 (this does not require PyTorch and HF Transformers to be installed): 
 ```python
 # call mauve.compute_mauve using features obtained directly
@@ -119,6 +121,8 @@ p_feats = np.random.randn(100, 1024)  # feature dimension = 1024
 q_feats = np.random.randn(100, 1024)
 out = mauve.compute_mauve(p_features=p_feats, q_features=q_feats)
 ```
+Note that this API can be used to evaluate other modalities such as images or audio with MAUVE.
+
 
 You can also compute MAUVE using the tokenized (BPE) representation using the GPT-2 vocabulary 
 (e.g., obtained from using an explicit call to `transformers.GPT2Tokenizer`).
@@ -171,7 +175,7 @@ If you would like to contribute, please submit a pull request.
 We encourage and highly value community contributions.
 
 Some features which would be good to have are:
-- featurization in HuggingFace Transformers with a  TensorFlow backend.
+- featurization in HuggingFace Transformers with a JAX backend.
     
 ## Best Practices for MAUVE
 MAUVE is quite different from most metrics in common use, so here are a few guidelines on proper usage of MAUVE:
