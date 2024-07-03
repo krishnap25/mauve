@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="mauve-text",
-    version="0.3.0",
+    version="0.4.0",
     author="Krishna Pillutla",
     author_email="pillutla@cs.washington.edu",
     description="Implementation of the MAUVE to evaluate text generation",
